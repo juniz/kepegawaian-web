@@ -68,6 +68,7 @@
     {{--  TOAST area --}}
     <x-toast />
 
+    <script src="{{ asset('livewire/livewire.js') }}"></script>
     {{-- PWA Script --}}
     <script src="{{ asset('/sw.js') }}"></script>
     <script>
