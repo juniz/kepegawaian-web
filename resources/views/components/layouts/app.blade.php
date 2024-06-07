@@ -68,7 +68,7 @@
     {{--  TOAST area --}}
     <x-toast />
 
-    @if(app::environment('production'))
+    @if(App::environment('production'))
     <script src="{{ asset('livewire/livewire.js') }}"></script>
     @endif
     {{-- PWA Script --}}
