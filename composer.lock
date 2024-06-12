@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c3f175693611e9263461541ca1eee978",
+    "content-hash": "a79954bb8690410d3e14abbb29e5f8df",
     "packages": [
         {
             "name": "adrianorosa/laravel-geolocation",
@@ -3190,6 +3190,79 @@
                 }
             ],
             "time": "2023-02-08T01:06:31+00:00"
+        },
+        {
+            "name": "omnia-digital/livewire-calendar",
+            "version": "3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/omnia-digital/livewire-calendar.git",
+                "reference": "b7cb400252b21af419780b15e8aa251cc0bca5cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/omnia-digital/livewire-calendar/zipball/b7cb400252b21af419780b15e8aa251cc0bca5cb",
+                "reference": "b7cb400252b21af419780b15e8aa251cc0bca5cb",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+                "livewire/livewire": "^2.0||^3.0",
+                "php": "^7.2|^8.0|^8.1|^8.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^5.0|^6.0",
+                "phpunit/phpunit": "^8.0|^9.0|^10.0|^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Omnia\\LivewireCalendar\\LivewireCalendarServiceProvider"
+                    ],
+                    "aliases": {
+                        "LivewireCalendar": "Omnia\\LivewireCalendar\\LivewireCalendarFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Omnia\\LivewireCalendar\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Josh Torres",
+                    "email": "josht@omniadigital.io",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Andrés Santibáñez",
+                    "email": "santibanez.andres@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Osei Quashie",
+                    "email": "osei@omniadigital.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel Livewire calendar component",
+            "homepage": "https://github.com/omnia-digital/livewire-calendar",
+            "keywords": [
+                "livewire-calendar",
+                "omnia",
+                "omnia-digital"
+            ],
+            "support": {
+                "issues": "https://github.com/omnia-digital/livewire-calendar/issues",
+                "source": "https://github.com/omnia-digital/livewire-calendar/tree/3.1.1"
+            },
+            "time": "2024-03-19T15:40:20+00:00"
         },
         {
             "name": "phpoption/phpoption",

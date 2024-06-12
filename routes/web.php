@@ -8,6 +8,7 @@ Volt::route('/', 'login.index')->middleware('login');
 Volt::route('/home', 'home.index')->middleware('ceklogin');
 Volt::route('/izin', 'izin.index')->middleware('ceklogin');
 Volt::route('/cuti', 'cuti.index')->middleware('ceklogin');
+Volt::route('/jadwal', 'jadwal.index')->middleware('ceklogin');
 Route::get('/logout', function () {
     session()->forget('user');
     return redirect('/');

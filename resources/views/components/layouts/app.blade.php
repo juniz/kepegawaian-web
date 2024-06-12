@@ -53,6 +53,7 @@
                 <x-menu-item title="Presensi" icon="o-camera" link="/home" />
                 <x-menu-item title="Izin" icon="o-clipboard" link="/izin" />
                 <x-menu-item title="Cuti" icon="o-clipboard" link="/cuti" />
+                <x-menu-item title="Jadwal" icon="o-calendar-days" link="/jadwal" />
                 {{-- <x-menu-sub title="Settings" icon="o-cog-6-tooth">
                     <x-menu-item title="Wifi" icon="o-wifi" link="####" />
                     <x-menu-item title="Archives" icon="o-archive-box" link="####" />
