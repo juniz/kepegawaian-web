@@ -13,3 +13,11 @@ Route::get('/logout', function () {
     session()->forget('user');
     return redirect('/');
 })->middleware('ceklogin');
+
+Livewire::setScriptRoute(function ($handle) {
+    return Route::get('/vendor/livewire/livewire.js', $handle);
+});
+
+Livewire::setUpdateRoute(function ($handle) {
+    return Route::post('/vendor/livewire/update', $handle);
+});
