@@ -14,9 +14,9 @@ Route::get('/logout', function () {
     return redirect('/');
 })->middleware('ceklogin');
 
-Livewire::setScriptRoute(function ($handle) {
-    return Route::get('sdm/vendor/livewire/livewire.js', $handle);
-});
+// Livewire::setScriptRoute(function ($handle) {
+//     return Route::get('sdm/vendor/livewire/livewire.js', $handle);
+// });
 
 Livewire::setUpdateRoute(function ($handle) {
     return Route::post('sdm/vendor/livewire/update', $handle);
