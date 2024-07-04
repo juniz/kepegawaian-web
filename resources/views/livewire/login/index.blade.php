@@ -31,7 +31,7 @@ class extends Component {
                     ->whereRaw('user.id_user = AES_ENCRYPT(?,"nur")',[$this->username])
                     ->where('pegawai.stts_aktif', 'AKTIF')
                     ->selectRaw("pegawai.id, AES_DECRYPT(user.id_user,'nur') as username, AES_DECRYPT(user.password,'windi') as password, pegawai.nama, pegawai.departemen as cap, pegawai.tmp_lahir, pegawai.tgl_lahir, pegawai.alamat, pegawai.photo")
-                    ->first()->toArray();
+                    ->first();
             // dd($cek);
             if($cek){
                 if($cek->password == $this->password){
