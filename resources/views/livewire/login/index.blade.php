@@ -37,7 +37,7 @@ class extends Component {
                 if($cek->password == $this->password){
                     session(['user' => $cek]);
                     // cookie('user', $cek, 60*24*30);
-                    // dd(session('user'));
+                    dd(session('user'));
                     $this->redirect('/home');
                 }else{
                     $this->error('Password Salah');
