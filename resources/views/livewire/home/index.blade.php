@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 new class extends Component {
     use WithFileUploads, Toast;
+    public $selectedTab = 'presensi';
     public string $id_pegawai = '';
     public string $name = '';
     public $image;
@@ -78,6 +79,17 @@ new class extends Component {
         $manager = new ImageManager(array('driver' => 'gd'));
         $manager->make($image)->resize(300, 300)->save();
     }
+
+    public function simpanLokasi()
+    {
+        DB::table('geolocation_presensi')
+            ->insert([
+                'id' => $this->id_pegawai,
+                'tanggal' => date('Y-m-d'),
+                'latitude' => $this->latitude,
+                'longitude' => $this->longitude,
+            ]);
+    } 
 
     public function save()
     {
@@ -166,6 +178,15 @@ new class extends Component {
                     'photo' => $url,
                 ]);
 
+                $jarak = $this->hitungJarak($this->latitude, $this->longitude, -7.5999859439332385, 111.89475136290345);
+
+                if($jarak > 300){
+                    $this->error('Anda diluar jangkauan lokasi', position: 'toast-bottom');
+                    return;
+                }
+
+                $this->simpanLokasi();
+
             }else if($cek_presensi){
 
                 $status = $cek->status;
@@ -209,6 +230,20 @@ new class extends Component {
             DB::rollBack();
             $this->error($e->getMessage());
         }
+    }
+
+    public function hitungJarak($lat1, $lon1, $lat2, $lon2)
+    {
+        $theta = (float)$lon1 - (float)$lon2;
+        $miles = (sin(deg2rad($lat1)) * sin(deg2rad($lat2))) + (cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta)));
+        $miles = acos($miles);
+        $miles = rad2deg($miles);
+        $miles = $miles * 60 * 1.1515;
+        $feet = $miles * 5280;
+        $yards = $feet / 3;
+        $kilometers = $miles * 1.609344;
+        $meters = $kilometers * 1000;
+        return $meters;
     }
 
     public function pulang()
@@ -286,33 +321,39 @@ new class extends Component {
 <div>
     <x-header title="{{ $name }}" separator />
     <x-card>
-        <div class="flex flex-col justify-center items-center space-y-2 ">
-            @if($statusPresensi)
-                <img src="{{ $imageMasuk }}" alt="" class="w-40 h-40">
-                <div class="text-center">
-                    <h1 class="text-2xl font-bold">Presensi Pulang</h1>
-                    <p class="text-sm">Silahkan lakukan presensi pulang</p>
+        <x-tabs wire:model="selectedTab">
+            <x-tab name="presensi" label="Presensi" icon="o-users" >
+                <div class="flex flex-col justify-center items-center space-y-2 ">
+                    @if($statusPresensi)
+                        <img src="{{ $imageMasuk }}" alt="" class="w-40 h-40">
+                        <div class="text-center">
+                            <h1 class="text-2xl font-bold">Presensi Pulang</h1>
+                            <p class="text-sm">Silahkan lakukan presensi pulang</p>
+                        </div>
+                        <x-button wire:click='pulang' wire:confirm='Anda yakin ingin melakukan presesnsi pulang sekarang ?' icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white" type="submit" spinner="pulang" />
+                    @else
+                    <x-form wire:submit="save">
+                    <x-file wire:model="image" accept="image/png, image/jpeg" change-text="{{ $statusPresensi ? 'Presensi Pulang' : 'Presensi Masuk' }}">
+                        <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60"  />
+                    </x-file>
+                    <div class="w-auto">
+                        <x-select 
+                            label="Pilih Shift" 
+                            icon="o-clock" 
+                            placeholder="Pilih Shift"
+                            :options="$jamjaga"
+                            wire:model="selectedJam" />
+                    </div>
+                    <x-button icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white" type="submit" spinner="save" />
+                    </x-form>
+                    @endif
                 </div>
-                <x-button wire:click='pulang' wire:confirm='Anda yakin ingin melakukan presesnsi pulang sekarang ?' icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white" type="submit" spinner="pulang" />
-            @else
-            <x-form wire:submit="save">
-            <x-file wire:model="image" accept="image/png, image/jpeg" change-text="{{ $statusPresensi ? 'Presensi Pulang' : 'Presensi Masuk' }}">
-                <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60"  />
-            </x-file>
-            <div class="w-auto">
-                <x-select 
-                    label="Pilih Shift" 
-                    icon="o-clock" 
-                    placeholder="Pilih Shift"
-                    :options="$jamjaga"
-                    wire:model="selectedJam" />
-            </div>
-            <x-button icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white" type="submit" spinner="save" />
-            </x-form>
-            @endif
-        </div>
+            </x-tab>
+            <x-tab name="riwayat" label="Riwayat Presensi Hari Ini" icon="o-table-cells" >
+                <livewire:home.riwayatpresensi />
+            </x-tab>
+        </x-tabs>
     </x-card>
-    <livewire:home.riwayatpresensi />
 </div>
 
 @script

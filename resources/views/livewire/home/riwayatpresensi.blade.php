@@ -5,6 +5,7 @@ use App\Models\TemporaryPresensi;
 use App\Models\RekapPresensi;
 use Livewire\WithPagination;
 use Livewire\Attributes\On; 
+use Illuminate\Support\Facades\DB;
 
 new class extends Component {
     use WithPagination;
@@ -18,6 +19,7 @@ new class extends Component {
             ['key' => 'jam_pulang', 'label' => 'Jam Pulang'],
             ['key' => 'status', 'label' => 'Status'],
             ['key' => 'keterlambatan', 'label' => 'Keterlambatan'],
+            ['key' => 'lokasi', 'label' => 'Lokasi'],
         ];
     }
 
@@ -29,13 +31,23 @@ new class extends Component {
         ];
     }
 
+    public function getGeo($id)
+    {
+        // dd($id);
+        $data = DB::table('geolocation_presensi')
+            ->where('id', $id)
+            ->where('tanggal', date('Y-m-d'))
+            ->first();
+        return $data->latitude.', '.$data->longitude;
+    }
+
     #[On('refresh')]
     public function presensi()
     {
         $rekap = TemporaryPresensi::query()
             ->join('pegawai', 'temporary_presensi.id', '=', 'pegawai.id')
             ->join('departemen', 'pegawai.departemen', '=', 'departemen.dep_id')
-            ->where('departemen.dep_id', 'IT')
+            ->where('departemen.dep_id', session('user')->cap)
             ->orderBy('jam_datang', 'desc')
             ->paginate(10);
 
@@ -54,6 +66,13 @@ new class extends Component {
 
 <div class="space-y-2">
     <x-card>
-        <x-table :headers="$headers" :rows="$presensi" striped with-pagination />
+        <x-table :headers="$headers" :rows="$presensi" striped with-pagination >
+            @scope('cell_lokasi', $value)
+                @php
+                    $geo = $this->getGeo($value->id);
+                @endphp
+                <x-button class="btn-sm" link="https://www.google.com/maps/search/?api=1&query={{ $geo }}" external icon="o-map" tooltip="{{$geo}}" />
+            @endscope
+        </x-table>
     </x-card>
 </div>
