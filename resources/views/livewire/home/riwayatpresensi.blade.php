@@ -13,6 +13,7 @@ new class extends Component {
     {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'hidden'],
+            ['key' => 'foto', 'label' => 'Foto'],
             ['key' => 'pegawai.nama', 'label' => 'Nama'],
             ['key' => 'shift', 'label' => 'Shift'],
             ['key' => 'jam_datang', 'label' => 'Jam Datang'],
@@ -49,8 +50,8 @@ new class extends Component {
             ->join('departemen', 'pegawai.departemen', '=', 'departemen.dep_id')
             ->where('departemen.dep_id', session('user')->cap)
             ->orderBy('jam_datang', 'desc')
+            ->select('temporary_presensi.*', 'pegawai.nama')
             ->paginate(10);
-
         return $rekap;
     }
 
@@ -67,6 +68,13 @@ new class extends Component {
 <div class="space-y-2">
     <x-card>
         <x-table :headers="$headers" :rows="$presensi" striped with-pagination >
+            @scope('cell_foto', $value)
+                @php
+                    $images = [];
+                    $images[0] = $value->photo;
+                @endphp
+                <x-image-gallery :images="$images" class="h-24 rounded-box" />
+            @endscope
             @scope('cell_lokasi', $value)
                 @php
                     $geo = $this->getGeo($value->id);
@@ -76,3 +84,9 @@ new class extends Component {
         </x-table>
     </x-card>
 </div>
+
+@section('head')
+    <script src="https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/umd/photoswipe.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/umd/photoswipe-lightbox.umd.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/photoswipe.min.css" rel="stylesheet">
+@endsection

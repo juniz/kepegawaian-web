@@ -10,6 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($title) ? $title.' - '.config('app.name') : config('app.name') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @yield('head')
     {{-- @livewireStyles --}}
 </head>
 <body class="min-h-screen font-sans antialiased bg-base-200/50 dark:bg-base-200">
@@ -28,6 +29,8 @@
 
     {{-- MAIN --}}
     <x-main full-width>
+
+        
         {{-- SIDEBAR --}}
         <x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-100 lg:bg-inherit">
 
@@ -38,34 +41,44 @@
             <x-menu activate-by-route>
 
                 {{-- User --}}
+                
+                <x-menu-separator />
                 @if($user = session('user'))
-                    <x-menu-separator />
 
-                    <x-list-item :item="$user" value="nama" sub-value="cap" no-separator no-hover class="-mx-2 !-my-2 rounded">
-                        <x-slot:actions>
-                            <x-button icon="o-power" class="btn-circle btn-ghost btn-xs" tooltip-left="logoff" no-wire-navigate link="/logout" />
-                        </x-slot:actions>
-                    </x-list-item>
+                <x-list-item :item="$user" value="nama" sub-value="cap" no-separator no-hover class="-mx-2 !-my-2 rounded">
+                    <x-slot:actions>
+                        <x-button icon="o-power" class="btn-circle btn-ghost btn-xs" tooltip-left="logoff" no-wire-navigate link="/logout" />
+                    </x-slot:actions>
+                </x-list-item>
 
-                    <x-menu-separator />
-                @endif
-
+                <x-menu-separator />
+                
+                <x-menu-item title="Dashboard" icon="o-chart-bar-square" link="/dashboard" />
                 <x-menu-item title="Presensi" icon="o-camera" link="/home" />
                 <x-menu-item title="Izin" icon="o-clipboard" link="/izin" />
                 <x-menu-item title="Cuti" icon="o-clipboard" link="/cuti" />
                 <x-menu-item title="Jadwal" icon="o-calendar-days" link="/jadwal" />
+                <x-menu-item title="Rapat" icon="c-user-group" link="/rapat" />
                 {{-- <x-menu-sub title="Settings" icon="o-cog-6-tooth">
                     <x-menu-item title="Wifi" icon="o-wifi" link="####" />
                     <x-menu-item title="Archives" icon="o-archive-box" link="####" />
                 </x-menu-sub> --}}
+                @endif
+
             </x-menu>
         </x-slot:sidebar>
+
+        {{-- HEADER --}}
 
         {{-- The `$slot` goes here --}}
         <x-slot:content>
             {{ $slot }}
         </x-slot:content>
     </x-main>
+
+    <div class="fixed bottom-5 right-5 transform">
+        @yield('floating')
+    </div>
 
     {{--  TOAST area --}}
     <x-toast />
@@ -77,7 +90,7 @@
         if ("serviceWorker" in navigator) {
             // Register a service worker hosted at the root of the
             // site using the default scope.
-            navigator.serviceWorker.register("/sdm/sw.js").then(
+            navigator.serviceWorker.register("sw.js").then(
             (registration) => {
                 console.log("Service worker registration succeeded:", registration);
             },

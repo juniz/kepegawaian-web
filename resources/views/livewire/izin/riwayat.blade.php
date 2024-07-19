@@ -46,5 +46,5 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-table :headers="$headers" :rows="$riwayatIzin" with-pagination />
+    <x-table :headers="$headers" :rows="$riwayatIzin" striped with-pagination />
 </div>

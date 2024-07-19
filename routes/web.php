@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RapatController;
 use Livewire\Livewire;
 use Livewire\Volt\Volt;
 
@@ -18,6 +19,9 @@ Volt::route('/home', 'home.index')->middleware('ceklogin');
 Volt::route('/izin', 'izin.index')->middleware('ceklogin');
 Volt::route('/cuti', 'cuti.index')->middleware('ceklogin');
 Volt::route('/jadwal', 'jadwal.index')->middleware('ceklogin');
+Volt::route('/dashboard', 'dashboard.index')->middleware('ceklogin');
+Volt::route('/rapat', 'rapat.index');
+Route::get('/rapat/print', [RapatController::class, 'index']);
 Route::get('/logout', function () {
     session()->forget('user');
     return redirect('/');

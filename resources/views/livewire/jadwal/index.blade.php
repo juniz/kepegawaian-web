@@ -145,9 +145,9 @@ new class extends Component {
         <div class="grid grid-cols-2 md:grid-cols-7 gap-2">
             <div class="col-span-3 md:col-span-7">
                 <div class="flex items-center justify-between mb-4">
-                    <button wire:click='previous()' class="px-4 py-2 text-sm font-medium text-gray-500 bg-white rounded-md shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Previous</button>
+                    <button wire:click='previous()' class="px-4 py-2 text-sm font-medium text-gray-500 bg-white rounded-md shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Sebelumnya</button>
                     <h2 class="text-lg font-medium text-gray-700">{{ $bulan }} {{ $tahun }}</h2>
-                    <button wire:click='next' class="px-4 py-2 text-sm font-medium bg-black text-white rounded-md shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Next</button>
+                    <button wire:click='next' class="px-4 py-2 text-sm font-medium bg-slate-700 text-white rounded-md shadow-md hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Selanjutnya</button>
                 </div>
             </div>
             <div class="col-span-2 md:col-span-7">

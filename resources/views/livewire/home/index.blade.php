@@ -178,10 +178,10 @@ new class extends Component {
                     'photo' => $url,
                 ]);
 
-                $jarak = $this->hitungJarak($this->latitude, $this->longitude, -7.5999859439332385, 111.89475136290345);
+                $jarak = $this->hitungJarak($this->latitude, $this->longitude, config('presensi.latitute'), config('presensi.longitude'));
 
-                if($jarak > 300){
-                    $this->error('Anda diluar jangkauan lokasi', position: 'toast-bottom');
+                if($jarak > config('presensi.jarak')){
+                    $this->error('Anda diluar jangkauan lokasi');
                     return;
                 }
 
@@ -249,7 +249,7 @@ new class extends Component {
     public function pulang()
     {
         if($this->latitude == '' || $this->longitude == ''){
-            $this->error('Lokasi tidak ditemukan, pastikan izin lokasi diaktifkan', position: 'toast-bottom');
+            $this->error('Lokasi tidak ditemukan, pastikan izin lokasi diaktifkan');
             return;
         }
 
@@ -266,12 +266,17 @@ new class extends Component {
                 ->where('pegawai.id', $this->id_pegawai)
                 ->where('jam_jaga.shift', $tmp->shift)
                 ->first();
+
+            if(date('H:i:s') < $jam_jaga->jam_pulang){
+                $this->error('Belum waktunya pulang');
+                return;
+            }
             if($rekap){
-                $this->error('Anda sudah melakukan presensi pulang', position: 'toast-bottom');
+                $this->error('Anda sudah melakukan presensi pulang');
                 return;
             }
             if(!$tmp){
-                $this->error('Anda belum melakukan presensi masuk', position: 'toast-bottom');
+                $this->error('Anda belum melakukan presensi masuk');
                 return;
             }else{
                 DB::beginTransaction();
@@ -300,7 +305,7 @@ new class extends Component {
                 $tmp->delete();
                 DB::commit();
                 $this->dispatch('refresh');
-                $this->success('Presensi berhasil', position: 'toast-bottom');
+                $this->success('Presensi berhasil');
             }
         }catch(\Throwable $e){
             DB::rollBack();
@@ -325,16 +330,16 @@ new class extends Component {
             <x-tab name="presensi" label="Presensi" icon="o-users" >
                 <div class="flex flex-col justify-center items-center space-y-2 ">
                     @if($statusPresensi)
-                        <img src="{{ $imageMasuk }}" alt="" class="w-40 h-40">
+                        <img src="{{ $imageMasuk }}" alt="" class="w-40 h-40 rounded-box">
                         <div class="text-center">
                             <h1 class="text-2xl font-bold">Presensi Pulang</h1>
                             <p class="text-sm">Silahkan lakukan presensi pulang</p>
                         </div>
-                        <x-button wire:click='pulang' wire:confirm='Anda yakin ingin melakukan presesnsi pulang sekarang ?' icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white" type="submit" spinner="pulang" />
+                        <x-button wire:click='pulang' wire:confirm='Anda yakin ingin melakukan presensi pulang sekarang ?' icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white" type="submit" spinner="pulang" />
                     @else
                     <x-form wire:submit="save">
                     <x-file wire:model="image" accept="image/png, image/jpeg" change-text="{{ $statusPresensi ? 'Presensi Pulang' : 'Presensi Masuk' }}">
-                        <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60"  />
+                        <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60 rounded-box"  />
                     </x-file>
                     <div class="w-auto">
                         <x-select 
@@ -349,12 +354,16 @@ new class extends Component {
                     @endif
                 </div>
             </x-tab>
-            <x-tab name="riwayat" label="Riwayat Presensi Hari Ini" icon="o-table-cells" >
+            <x-tab name="riwayat" label="Riwayat Presensi" icon="o-table-cells" >
                 <livewire:home.riwayatpresensi />
             </x-tab>
         </x-tabs>
     </x-card>
 </div>
+
+@section('head')
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.2.0/dist/signature_pad.umd.min.js"></script>
+@endsection
 
 @script
     <script>
