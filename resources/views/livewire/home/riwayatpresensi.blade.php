@@ -73,7 +73,7 @@ new class extends Component {
                     $images = [];
                     $images[0] = $value->photo;
                 @endphp
-                <x-image-gallery :images="$images" class="h-24 rounded-box" />
+                <x-image-gallery :images="$images" class="w-24 h-24 rounded-sm" />
             @endscope
             @scope('cell_lokasi', $value)
                 @php

@@ -58,7 +58,7 @@ new class extends Component {
 
         try{
 
-            $noCuti = DB::table('pengajuan_IZIN')->where('tanggal', $this->tgl_pengajuan)->max('no_pengajuan');
+            $noCuti = DB::table('pengajuan_izin')->where('tanggal', $this->tgl_pengajuan)->max('no_pengajuan');
             $last = substr($noCuti ?? 0 , -3) + 1;
             $lastNo = 'PI'.date('Ymd').sprintf("%03d", $last);
             $dtFormat1 = new DateTime($this->tgl_awal);

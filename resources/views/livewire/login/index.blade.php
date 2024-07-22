@@ -54,9 +54,9 @@ class extends Component {
     <div class="min-h-screen flex flex-col items-center justify-center py-6 px-4">
         <div class="mb-8 felx flex-col space-y-4">
             <img src="{{ asset('images/logo.png') }}" alt="logo" class="w-32 h-32 mx-auto">
-            <h1 class="text-2xl text-center font-bold text-gray-800">SDM Handal</h1>
+            <h1 class="text-2xl text-center font-bold text-gray-800 dark:text-white">SDM Handal</h1>
         </div>
-        <div class="max-w-md w-full border py-8 px-6 rounded border-gray-300 bg-white">
+        <div class="max-w-md w-full border py-8 px-6 rounded-lg border-gray-300 bg-white dark:bg-slate-800">
             <x-form wire:submit="save" class="space-y-3">
                 <x-input label="Username" wire:model="username" inline />
                 <x-input label="Password" wire:model="password" type="password" inline />             
