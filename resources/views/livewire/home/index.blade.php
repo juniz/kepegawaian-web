@@ -393,7 +393,7 @@ new class extends Component {
                 jpeg_quality: 90,
                 dest_width: 240,
                 dest_height: 320,
-                flip_horiz: false,
+                flip_horiz: true,
                 force_flash: false,
             });
             Webcam.attach('#my_camera');
