@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a79954bb8690410d3e14abbb29e5f8df",
+    "content-hash": "381fd8655acae2dcdf1b529cd01e0ae4",
     "packages": [
         {
             "name": "adrianorosa/laravel-geolocation",
@@ -1329,16 +1329,16 @@
         },
         {
             "name": "intervention/image",
-            "version": "3.6.3",
+            "version": "3.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Intervention/image.git",
-                "reference": "2dbfb53bf8909257e710cf6091d10a9ca7500742"
+                "reference": "5451ff9f909c2fc836722e5ed6831b9f9a6db68c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/2dbfb53bf8909257e710cf6091d10a9ca7500742",
-                "reference": "2dbfb53bf8909257e710cf6091d10a9ca7500742",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/5451ff9f909c2fc836722e5ed6831b9f9a6db68c",
+                "reference": "5451ff9f909c2fc836722e5ed6831b9f9a6db68c",
                 "shasum": ""
             },
             "require": {
@@ -1385,7 +1385,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Intervention/image/issues",
-                "source": "https://github.com/Intervention/image/tree/3.6.3"
+                "source": "https://github.com/Intervention/image/tree/3.7.2"
             },
             "funding": [
                 {
@@ -1397,7 +1397,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-02T09:03:18+00:00"
+            "time": "2024-07-05T13:35:01+00:00"
         },
         {
             "name": "jfcherng/php-color-output",

@@ -14,7 +14,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 use Mary\Traits\Toast;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Attributes\On; 
+use Livewire\Attributes\On;
 
 new class extends Component {
     use WithFileUploads, Toast;
@@ -119,8 +119,13 @@ new class extends Component {
 
             // $url = env('APP_URL') . '/storage/presensi/' . $fileName;
             // Storage::disk('public')->put('presensi/'.$fileName, $image_base64);
+            $manager = new ImageManager(new Driver());
 
-            $imageName = time().'.'.$this->image->extension();
+            $imageName = time().'-'.$this->id_pegawai.'.'.$this->image->extension();
+            $img = $manager->make($this->image->getRealPath())->encode('jpg', 65)->fit(760, null, function ($c) {
+                $c->aspectRatio();
+                $c->upsize();
+            });
             $this->image->storeAs('public/presensi', $imageName);
             $url = env('APP_URL').'/storage/presensi/'.$imageName;
 
