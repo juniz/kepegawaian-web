@@ -392,7 +392,7 @@ new class extends Component {
                 image_format: 'jpeg',
                 jpeg_quality: 90,
                 dest_width: 240,
-                dest_height: 320
+                dest_height: 320,
                 flip_horiz: false,
                 force_flash: false,
             });
