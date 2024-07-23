@@ -109,20 +109,20 @@ new class extends Component {
         }
 
         try{
-            $img = $this->image;
-            $image_parts = explode(";base64,", $img);
-            $image_type_aux = explode("image/", $image_parts[0]);
-            $image_type = $image_type_aux[1];
+            // $img = $this->image;
+            // $image_parts = explode(";base64,", $img);
+            // $image_type_aux = explode("image/", $image_parts[0]);
+            // $image_type = $image_type_aux[1];
             
-            $image_base64 = base64_decode($image_parts[1]);
-            $fileName = uniqid() . '.png';
+            // $image_base64 = base64_decode($image_parts[1]);
+            // $fileName = uniqid() . '.png';
 
-            $url = env('APP_URL') . '/storage/presensi/' . $fileName;
-            Storage::disk('public')->put('presensi/'.$fileName, $image_base64);
+            // $url = env('APP_URL') . '/storage/presensi/' . $fileName;
+            // Storage::disk('public')->put('presensi/'.$fileName, $image_base64);
 
-            // $imageName = time().'.'.$this->image->extension();
-            // $this->image->storeAs('public/presensi', $imageName);
-            // $url = env('APP_URL').'/storage/presensi/'.$imageName;
+            $imageName = time().'.'.$this->image->extension();
+            $this->image->storeAs('public/presensi', $imageName);
+            $url = env('APP_URL').'/storage/presensi/'.$imageName;
 
             DB::beginTransaction();
             $jam_jaga = JamJaga::query()
@@ -348,7 +348,7 @@ new class extends Component {
                     @else
                     <x-form wire:submit="save">
                     <x-file wire:model="image" accept="image/png, image/jpeg" change-text="{{ $statusPresensi ? 'Presensi Pulang' : 'Presensi Masuk' }}" capture>
-                        <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60 rounded-box"  />
+                        <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60 rounded-box bg-contain"  />
                     </x-file>
                     {{-- <div wire:ignore id="my_camera"></div>
                     <div id="camera-container" wire:ignore class="flex justify-center mb-3">
