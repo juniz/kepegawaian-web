@@ -387,8 +387,8 @@ new class extends Component {
         var cam = document.getElementById('my_camera');
         if(cam){
             Webcam.set({
-            width: 250,
-            height: 250,
+            width: 240,
+            height: 320,
             image_format: 'jpeg',
             jpeg_quality: 90,
             
