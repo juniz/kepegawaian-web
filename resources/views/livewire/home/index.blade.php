@@ -13,6 +13,8 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Mary\Traits\Toast;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\On; 
 
 new class extends Component {
     use WithFileUploads, Toast;
@@ -34,7 +36,6 @@ new class extends Component {
         $this->name = $user->nama;
         $this->dep_id = $user->cap;
         $this->statusPresensi = $this->cekPresensi();
-        $this->dispatch('getLocation');
     }
 
     public function jamjaga()
@@ -94,13 +95,10 @@ new class extends Component {
     public function save()
     {
         $this->validate([
-            'image' => 'required|image|mimes:jpeg,png|max:2048',
+            'image' => 'required',
             'selectedJam' => 'required',
         ],[
             'image.required' => 'Foto tidak boleh kosong',
-            'image.image' => 'File harus berupa gambar',
-            'image.mimes' => 'File harus berformat jpeg atau png',
-            'image.max' => 'Ukuran file maksimal 2MB',
             'selectedJam.required' => 'Shift tidak boleh kosong',
         ]);
 
@@ -111,9 +109,20 @@ new class extends Component {
         }
 
         try{
-            $imageName = time().'.'.$this->image->extension();
-            $this->image->storeAs('public/presensi', $imageName);
-            $url = env('APP_URL').'/storage/presensi/'.$imageName;
+            $img = $this->image;
+            $image_parts = explode(";base64,", $img);
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            
+            $image_base64 = base64_decode($image_parts[1]);
+            $fileName = uniqid() . '.png';
+
+            $url = env('APP_URL') . '/storage/presensi/' . $fileName;
+            Storage::disk('public')->put('presensi/'.$fileName, $image_base64);
+
+            // $imageName = time().'.'.$this->image->extension();
+            // $this->image->storeAs('public/presensi', $imageName);
+            // $url = env('APP_URL').'/storage/presensi/'.$imageName;
 
             DB::beginTransaction();
             $jam_jaga = JamJaga::query()
@@ -338,9 +347,16 @@ new class extends Component {
                         <x-button wire:click='pulang' wire:confirm='Anda yakin ingin melakukan presensi pulang sekarang ?' icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white" type="submit" spinner="pulang" />
                     @else
                     <x-form wire:submit="save">
-                    <x-file wire:model="image" accept="image/png, image/jpeg" change-text="{{ $statusPresensi ? 'Presensi Pulang' : 'Presensi Masuk' }}">
+                    {{-- <x-file wire:model="image" accept="image/png, image/jpeg" change-text="{{ $statusPresensi ? 'Presensi Pulang' : 'Presensi Masuk' }}">
                         <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60 rounded-box"  />
-                    </x-file>
+                    </x-file> --}}
+                    <div wire:ignore id="my_camera"></div>
+                    <div id="camera-container" wire:ignore class="flex justify-center mb-3">
+                        <x-button 
+                            label='Ambil Foto' 
+                            class="btn-sm btn-success w-[150px] btn-camera"
+                        />
+                    </div>
                     <div class="w-auto">
                         <x-select 
                             label="Pilih Shift" 
@@ -349,7 +365,7 @@ new class extends Component {
                             :options="$jamjaga"
                             wire:model="selectedJam" />
                     </div>
-                    <x-button icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white" type="submit" spinner="save" />
+                    <x-button icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white btn-submit" type="submit" spinner="save" />
                     </x-form>
                     @endif
                 </div>
@@ -365,21 +381,53 @@ new class extends Component {
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.2.0/dist/signature_pad.umd.min.js"></script>
 @endsection
 
-@script
+@section('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
     <script>
-       Livewire.on("getLocation", (event) => {
-            // alert("Mendapatkan lokasi...");
-            navigator.geolocation.getCurrentPosition(
-            function (position) {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-                @this.set("latitude", latitude);
-                @this.set("longitude", longitude);
-            },
-            function (error) {
-                alert("Error izin lokasi tidak diberikan oleh user.");
-            }
-            );
-        });
+        var cam = document.getElementById('my_camera');
+        if(cam){
+            Webcam.set({
+            width: 250,
+            height: 250,
+            image_format: 'jpeg',
+            jpeg_quality: 90,
+            
+
+            });
+            Webcam.attach('#my_camera');
+
+            document.querySelector('.btn-camera').addEventListener('click', function(){
+                Webcam.snap(function(data_uri){
+                    @this.set('image', data_uri);
+                    document.querySelector('#my_camera').innerHTML = '<img src="'+data_uri+'" class="w-[250px] h-[250px] rounded-box" />';
+                    $('.btn-camera').hide();
+                    $('#camera-container').append('<button id="btn-ulang" class="btn normal-case btn-sm btn-success w-[150px]" onclick="location.reload()">Batal</button>');
+                });
+            });
+        }
     </script>
+@endsection
+
+@script
+<script>
+    navigator.geolocation.getCurrentPosition(
+        function success(pos) {
+            var loc = pos.coords;
+            latitude = loc.latitude;
+            longitude = loc.longitude;
+            @this.set('latitude', latitude);
+            @this.set('longitude', longitude);
+        }, 
+        function error(err) {
+            alert('ERROR(' + err.code + '): ' + err.message);
+        }, 
+        {
+            maximumAge:Infinity, 
+            timeout:60000, 
+            enableHighAccuracy:false
+        }
+    );
+    
+</script>
 @endscript
+

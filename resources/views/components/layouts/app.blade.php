@@ -83,10 +83,15 @@
     {{--  TOAST area --}}
     <x-toast />
 
+    @yield('js')
+
     {{-- @livewireScripts --}}
     {{-- PWA Script --}}
     <script src="{{ asset('sw.js') }}"></script>
     <script>
+        var latitude;
+        var longitude;
+
         if ("serviceWorker" in navigator) {
             // Register a service worker hosted at the root of the
             // site using the default scope.
