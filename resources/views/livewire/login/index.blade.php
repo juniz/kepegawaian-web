@@ -56,7 +56,7 @@ class extends Component {
             <img src="{{ asset('images/logo.png') }}" alt="logo" class="w-32 h-32 mx-auto">
             <h1 class="text-2xl text-center font-bold text-gray-800 dark:text-white">SDM Handal</h1>
         </div>
-        <div class="max-w-md w-full border py-8 px-6 rounded-lg border-gray-300 bg-white dark:bg-slate-800">
+        <div class="max-w-md w-full border py-4 md:py-8 lg:py-8 px-4 md:px-6 lg:px-6 rounded-lg border-gray-300 bg-white dark:bg-slate-800">
             <x-form wire:submit="save" class="space-y-3">
                 <x-input label="Username" wire:model="username" inline />
                 <x-input label="Password" wire:model="password" type="password" inline />             
