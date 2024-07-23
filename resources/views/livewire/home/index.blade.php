@@ -124,10 +124,6 @@ new class extends Component {
             $imageName = time().'-'.$this->id_pegawai.'.'.$this->image->extension();
             $image = $manager->read($this->image->getRealPath());
             $image->encode('jpg', 65);
-            $image->fit(760, null, function ($c) {
-                $c->aspectRatio();
-                $c->upsize();
-            });
             $image->save(storage_path('app/public/presensi/'.$imageName));
             // $img = $manager->make($this->image->getRealPath())->encode('jpg', 65)->fit(760, null, function ($c) {
             //     $c->aspectRatio();
