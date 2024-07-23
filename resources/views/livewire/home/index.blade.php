@@ -122,11 +122,18 @@ new class extends Component {
             $manager = new ImageManager(new Driver());
 
             $imageName = time().'-'.$this->id_pegawai.'.'.$this->image->extension();
-            $img = $manager->make($this->image->getRealPath())->encode('jpg', 65)->fit(760, null, function ($c) {
+            $image = $manager->read($this->image->getRealPath());
+            $image->encode('jpg', 65);
+            $image->fit(760, null, function ($c) {
                 $c->aspectRatio();
                 $c->upsize();
             });
-            $this->image->storeAs('public/presensi', $imageName);
+            $image->save(storage_path('app/public/presensi/'.$imageName));
+            // $img = $manager->make($this->image->getRealPath())->encode('jpg', 65)->fit(760, null, function ($c) {
+            //     $c->aspectRatio();
+            //     $c->upsize();
+            // });
+            // $this->image->storeAs('public/presensi', $imageName);
             $url = env('APP_URL').'/storage/presensi/'.$imageName;
 
             DB::beginTransaction();
