@@ -15,7 +15,7 @@ use Mary\Traits\Toast;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
-use ImageOptimizer;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 new class extends Component {
     use WithFileUploads, Toast;
