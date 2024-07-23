@@ -393,15 +393,18 @@ new class extends Component {
                 jpeg_quality: 90,
                 dest_width: 240,
                 dest_height: 320,
-                flip_horiz: true,
-                force_flash: false,
+                constraints: {
+                    width: 240,
+                    height: 320,
+                    facingMode: 'user'
+                }
             });
             Webcam.attach('#my_camera');
 
             document.querySelector('.btn-camera').addEventListener('click', function(){
                 Webcam.snap(function(data_uri){
                     @this.set('image', data_uri);
-                    document.querySelector('#my_camera').innerHTML = '<img src="'+data_uri+'" class="w-[250px] h-[250px] rounded-box" />';
+                    document.querySelector('#my_camera').innerHTML = '<img src="'+data_uri+'" class="w-[240px] h-[320px] rounded-box" />';
                     $('.btn-camera').hide();
                     $('#camera-container').append('<button id="btn-ulang" class="btn normal-case btn-sm btn-success w-[150px]" onclick="location.reload()">Batal</button>');
                 });
