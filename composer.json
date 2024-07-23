@@ -19,7 +19,8 @@
     "livewire/livewire": "^3.4",
     "livewire/volt": "^1.6",
     "omnia-digital/livewire-calendar": "^3.1",
-    "robsontenorio/mary": "^1.30"
+    "robsontenorio/mary": "^1.30",
+    "spatie/laravel-image-optimizer": "^1.8"
   },
   "require-dev": {
     "fakerphp/faker": "^1.9.1",
