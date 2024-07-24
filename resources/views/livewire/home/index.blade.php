@@ -347,7 +347,7 @@ new class extends Component {
             <x-tab name="presensi" label="Presensi" icon="o-users" >
                 <div class="flex flex-col justify-center items-center space-y-2 ">
                     @if($statusPresensi)
-                        <img src="{{ $imageMasuk }}" alt="" class="w-40 h-40 rounded-box">
+                        <img src="{{ $imageMasuk }}" alt="" class="w-40 h-48 rounded-box">
                         <div class="text-center">
                             <h1 class="text-2xl font-bold">Presensi Pulang</h1>
                             <p class="text-sm">Silahkan lakukan presensi pulang</p>
