@@ -423,24 +423,25 @@ new class extends Component {
 
 @script
 <script>
-    navigator.geolocation.getCurrentPosition(
+    let watchID = navigator.geolocation.getCurrentPosition(
         function success(pos) {
             var loc = pos.coords;
             latitude = loc.latitude;
             longitude = loc.longitude;
             @this.set('latitude', latitude);
             @this.set('longitude', longitude);
+            navigator.geolocation.clearWatch(watchID);
         }, 
         function error(err) {
             alert('ERROR(' + err.code + '): ' + err.message);
         }, 
         {
-            maximumAge:Infinity, 
-            timeout:60000, 
+            maximumAge:0, 
+            timeout:5000, 
             enableHighAccuracy:false
         }
     );
-    
+
 </script>
 @endscript
 
