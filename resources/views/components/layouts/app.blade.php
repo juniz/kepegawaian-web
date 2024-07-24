@@ -80,6 +80,8 @@
         @yield('floating')
     </div>
 
+    <x-spotlight />  
+
     {{--  TOAST area --}}
     <x-toast />
 

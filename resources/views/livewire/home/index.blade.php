@@ -275,9 +275,16 @@ new class extends Component {
                 ->where('id', $this->id_pegawai)
                 ->where('jam_datang', 'like', '%'.date('Y-m-d').'%')
                 ->first();
+
+            if($rekap){
+                $this->error('Anda sudah melakukan presensi pulang');
+                return;
+            }
+
             $tmp = TemporaryPresensi::query()
                 ->where('id', $this->id_pegawai)
                 ->first();
+            
             $jam_jaga = JamJaga::query()
                 ->join('pegawai', 'pegawai.departemen', '=', 'jam_jaga.dep_id')
                 ->where('pegawai.id', $this->id_pegawai)
@@ -288,10 +295,7 @@ new class extends Component {
                 $this->error('Belum waktunya pulang');
                 return;
             }
-            if($rekap){
-                $this->error('Anda sudah melakukan presensi pulang');
-                return;
-            }
+            
             if(!$tmp){
                 $this->error('Anda belum melakukan presensi masuk');
                 return;
