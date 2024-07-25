@@ -9,6 +9,9 @@ new class extends Component {
     public array $chartData = [];
     public bool $showTerlambat = false;
     public bool $showTepatWaktu = false;
+    public bool $showUnit = false;
+    public $units = [];
+    public $dep = '';
 
     public function mount()
     {
@@ -56,11 +59,25 @@ new class extends Component {
                 'indexAxis' => 'y',
                 'responsive' => true,
                 'aspectRatio' => 0.5,
-
             ]
         ];
+        $this->units = $this->getUnit();
+        // dd($this->units);
+    }
+
+    public function getUnit()
+    {
+        return DB::table('departemen')
+                    ->selectRaw('dep_id as id, nama as name')
+                    ->get();
     }
     
+    public function updatedDep()
+    {
+        // dd($this->dep);
+        $this->dispatch('getUnit', $this->tanggal, $this->dep);
+    }
+
     public function absensiUnit($tanggal)
     {
         return DB::table('departemen')
@@ -97,6 +114,11 @@ new class extends Component {
         $tanggal = $this->tanggal.'%';
         $this->dispatch('getTepatWaktu', $tanggal);
         $this->showTepatWaktu = true;
+    }
+
+    public function openUnit()
+    {
+        $this->showUnit = true;
     }
 
     public function updatedTanggal()
@@ -141,13 +163,7 @@ new class extends Component {
             'options' => [
                 'indexAxis' => 'y',
                 'responsive' => true,
-                'onClick' => 'function(evt, item) {
-                    var index = item[0].index;
-                    var label = item[0].dataset.label;
-                    var departemen = item[0].dataset.departemen;
-                    window.location.href = "/dashboard/pegawai/detail?departemen="+departemen+"&status="+
-                    label+"&tanggal='.$this->tanggal.'";
-                }'
+                'aspectRatio' => 0.5,
             ]
         ];
     }
@@ -162,6 +178,7 @@ new class extends Component {
         <x-slot:actions>
             <x-button label='Terlambat' class="btn-error" @click="$wire.openTerlambat"/>
             <x-button label='Tepat Waktu' class="btn-success" @click="$wire.openTepatWaktu" />
+            <x-button label='Per Unit' class="btn-outline" @click="$wire.openUnit" />
         </x-slot:actions>
     </x-header>
     <x-card>
@@ -189,6 +206,26 @@ new class extends Component {
     >
         <div>
             <livewire:dashboard.tepatwaktu />
+        </div>
+    </x-drawer>
+    <x-drawer 
+        wire:model="showUnit" 
+        class="w-auto lg:w-1/2"
+        title="Daftar Pegawai Per Unit"
+        separator
+        with-close-button
+        close-on-escape
+    >
+        <div class="flex flex-col gap-4">
+            <x-choices-offline
+                wire:model.live='dep'
+                :options='$units'
+                icon='o-folder'
+                placeholder='Pilih Unit'
+                single
+                searchable
+            />
+            <livewire:dashboard.unit />
         </div>
     </x-drawer>
 </div>
