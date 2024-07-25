@@ -54,6 +54,11 @@
                 <x-menu-separator />
                 
                 <x-menu-item title="Dashboard" icon="o-chart-bar-square" link="/dashboard" />
+                @foreach(config('presensi.dashboard_pegawai') as $item)
+                    @if($user->cap == $item['id'])
+                        <x-menu-item title="Dashboard Pegawai" icon="o-chart-bar-square" link="/dashboard/pegawai" />
+                    @endif
+                @endforeach
                 <x-menu-item title="Presensi" icon="o-camera" link="/home" />
                 <x-menu-item title="Izin" icon="o-clipboard" link="/izin" />
                 <x-menu-item title="Cuti" icon="o-clipboard" link="/cuti" />
