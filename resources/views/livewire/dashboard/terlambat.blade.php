@@ -47,7 +47,9 @@ new class extends Component {
                     <img src="{{ $avatar }}" alt="{{ $item->nama }}" class="w-24 hover:scale-150">
                 </x-slot>
                 <x-slot:actions>
-                    <div class="flex flex-col justify-center gap-4">
+                    <div class="flex flex-col justify-center gap-2 lg:gap-4">
+                        <span class="text-sm truncate visible lg:invisible">{{ $item->nama }}</span>
+                        <span class="text-sm text-gray-400 truncate visible lg:invisible">{{ $item->departemen }}</span>
                         <progress class="progress progress-primary w-56" value="{{$item->total_terlambat}}" max="{{$item->total}}"></progress>
                         <div class="flex justify-between">
                             <span class="text-sm text-gray-600">Terlambat I</span>

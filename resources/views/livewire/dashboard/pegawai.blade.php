@@ -55,13 +55,8 @@ new class extends Component {
             'options' => [
                 'indexAxis' => 'y',
                 'responsive' => true,
-                'onClick' => 'function(evt, item) {
-                    var index = item[0].index;
-                    var label = item[0].dataset.label;
-                    var departemen = item[0].dataset.departemen;
-                    window.location.href = "/dashboard/pegawai/detail?departemen="+departemen+"&status="+
-                    label+"&tanggal='.$this->tanggal.'";
-                }'
+                'aspectRatio' => 0.5,
+
             ]
         ];
     }
@@ -174,7 +169,7 @@ new class extends Component {
     </x-card>
     <x-drawer 
         wire:model="showTerlambat" 
-        class="w-11/12 lg:w-1/2"
+        class="w-auto lg:w-1/2"
         title="Daftar Pegawai Terlambat"
         separator
         with-close-button
@@ -186,7 +181,7 @@ new class extends Component {
     </x-drawer>
     <x-drawer 
         wire:model="showTepatWaktu" 
-        class="w-11/12 lg:w-1/2"
+        class="w-auto lg:w-1/2"
         title="Daftar Pegawai Tepat Waktu"
         separator
         with-close-button
