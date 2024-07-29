@@ -1,7 +1,7 @@
 {
   "name": "SIKAT",
   "short_name": "SIKAT",
-  "start_url": "/index.php",
+  "start_url": "/",
   "background_color": "#6777ef",
   "description": "Sistem Informasi Kehadiran Anggota Terintegrasi",
   "display": "fullscreen",
