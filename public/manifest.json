@@ -1,7 +1,7 @@
 {
   "name": "SDM HANDAL",
   "short_name": "SDM",
-  "start_url": "/index.php",
+  "start_url": "/",
   "background_color": "#6777ef",
   "description": "APLIKASI KEPEGAWAIAN",
   "display": "fullscreen",
