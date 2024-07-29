@@ -5,14 +5,14 @@ use App\Http\Controllers\RapatController;
 use Livewire\Livewire;
 use Livewire\Volt\Volt;
 
-// Livewire::setScriptRoute(function ($handle) {
-//     return Route::get('sdm/vendor/livewire/livewire.js', $handle);
-// });
+Livewire::setScriptRoute(function ($handle) {
+    return Route::get('vendor/livewire/livewire.js', $handle);
+});
 
-// Livewire::setUpdateRoute(function ($handle) {
-//     // dd($handle);
-//     return Route::post('sdm/vendor/livewire/update', $handle);
-// });
+Livewire::setUpdateRoute(function ($handle) {
+    // dd($handle);
+    return Route::post('vendor/livewire/update', $handle);
+});
 
 Volt::route('/', 'login.index')->middleware('login');
 Volt::route('/home', 'home.index')->middleware('ceklogin');
