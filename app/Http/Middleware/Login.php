@@ -16,7 +16,7 @@ class Login
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->session()->has('user')) {
-            return redirect('/home');
+            return redirect('/dashboard');
         }
         return $next($request);
     }
