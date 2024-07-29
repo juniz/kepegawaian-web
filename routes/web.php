@@ -17,12 +17,12 @@ use Livewire\Volt\Volt;
 Volt::route('/', 'login.index')->middleware('login');
 Volt::route('/home', 'home.index')->middleware('ceklogin');
 Volt::route('/izin', 'izin.index')->middleware('ceklogin');
-Volt::route('/cuti', 'cuti.index')->middleware('ceklogin');
+// Volt::route('/cuti', 'cuti.index')->middleware('ceklogin');
 Volt::route('/jadwal', 'jadwal.index')->middleware('ceklogin');
 Volt::route('/dashboard', 'dashboard.index')->middleware('ceklogin');
 Volt::route('/dashboard/pegawai', 'dashboard.pegawai')->middleware('ceklogin');
-Volt::route('/rapat', 'rapat.index');
-Route::get('/rapat/print', [RapatController::class, 'index']);
+// Volt::route('/rapat', 'rapat.index');
+// Route::get('/rapat/print', [RapatController::class, 'index']);
 Route::get('/logout', function () {
     session()->forget('user');
     return redirect('/');

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html data-theme="{{ env('THEME', 'light') }}" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
@@ -61,9 +61,9 @@
                 @endforeach
                 <x-menu-item title="Presensi" icon="o-camera" link="/home" />
                 <x-menu-item title="Izin" icon="o-clipboard" link="/izin" />
-                <x-menu-item title="Cuti" icon="o-clipboard" link="/cuti" />
+                {{-- <x-menu-item title="Cuti" icon="o-clipboard" link="/cuti" /> --}}
                 <x-menu-item title="Jadwal" icon="o-calendar-days" link="/jadwal" />
-                <x-menu-item title="Rapat" icon="c-user-group" link="/rapat" />
+                {{-- <x-menu-item title="Rapat" icon="c-user-group" link="/rapat" /> --}}
                 {{-- <x-menu-sub title="Settings" icon="o-cog-6-tooth">
                     <x-menu-item title="Wifi" icon="o-wifi" link="####" />
                     <x-menu-item title="Archives" icon="o-archive-box" link="####" />
