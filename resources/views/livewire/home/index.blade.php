@@ -240,8 +240,9 @@ new class extends Component {
 
             DB::commit();
             $this->success('Presensi berhasil', position: 'toast-bottom');
-            $this->cekPresensi();
-            $this->dispatch('refresh');
+            $this->refresh();
+            // $this->cekPresensi();
+            // $this->dispatch('refresh');
 
         }catch(\Trowable $e){
             DB::rollBack();
