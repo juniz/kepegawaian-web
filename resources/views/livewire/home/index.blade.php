@@ -359,9 +359,11 @@ new class extends Component {
                         <x-button wire:click='pulang' wire:confirm='Anda yakin ingin melakukan presensi pulang sekarang ?' icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white" type="submit" spinner="pulang" />
                     @else
                     <x-form wire:submit="save">
-                    <x-file wire:model="image" accept="image/png, image/jpeg" change-text="{{ $statusPresensi ? 'Presensi Pulang' : 'Presensi Masuk' }}" capture>
-                        <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60 rounded-box bg-contain"  />
+                    <x-file wire:model="image" accept="image/png, image/jpeg" change-text="Ganti">
+                        <img src="/images/camera.png" class="w-50 h-60 rounded-box bg-contain"  />
+                        {{-- <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60 rounded-box bg-contain"  /> --}}
                     </x-file>
+                    <span class="text-sm text-center text-red-600">Harap gunakan kamera depan</span>
                     {{-- <div wire:ignore id="my_camera"></div>
                     <div id="camera-container" wire:ignore class="flex justify-center mb-3">
                         <x-button 
@@ -390,40 +392,41 @@ new class extends Component {
 </div>
 
 @section('head')
-    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.2.0/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
 @endsection
 
-@section('js')
+{{-- @section('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
     <script>
-        // var cam = document.getElementById('my_camera');
-        // if(cam){
-        //     Webcam.set({
-        //         width: 240,
-        //         height: 320,
-        //         image_format: 'jpeg',
-        //         jpeg_quality: 90,
-        //         dest_width: 240,
-        //         dest_height: 320,
-        //         constraints: {
-        //             width: 240,
-        //             height: 320,
-        //             facingMode: 'user'
-        //         }
-        //     });
-        //     Webcam.attach('#my_camera');
+        var cam = document.getElementById('my_camera');
+        if(cam){
+            Webcam.set({
+                width: 240,
+                height: 320,
+                image_format: 'jpeg',
+                jpeg_quality: 90,
+                dest_width: 240,
+                dest_height: 320,
+                constraints: {
+                    width: 240,
+                    height: 320,
+                    facingMode: 'user'
+                }
+            });
+            Webcam.attach('#my_camera');
 
-        //     document.querySelector('.btn-camera').addEventListener('click', function(){
-        //         Webcam.snap(function(data_uri){
-        //             @this.set('image', data_uri);
-        //             document.querySelector('#my_camera').innerHTML = '<img src="'+data_uri+'" class="w-[240px] h-[320px] rounded-box" />';
-        //             $('.btn-camera').hide();
-        //             $('#camera-container').append('<button id="btn-ulang" class="btn normal-case btn-sm btn-success w-[150px]" onclick="location.reload()">Batal</button>');
-        //         });
-        //     });
-        // }
+            document.querySelector('.btn-camera').addEventListener('click', function(){
+                Webcam.snap(function(data_uri){
+                    @this.set('image', data_uri);
+                    document.querySelector('#my_camera').innerHTML = '<img src="'+data_uri+'" class="w-[240px] h-[320px] rounded-box" />';
+                    $('.btn-camera').hide();
+                    $('#camera-container').append('<button id="btn-ulang" class="btn normal-case btn-sm btn-success w-[150px]" onclick="location.reload()">Batal</button>');
+                });
+            });
+        }
     </script>
-@endsection
+@endsection --}}
 
 @script
 <script>
