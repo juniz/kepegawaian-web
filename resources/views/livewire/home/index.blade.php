@@ -359,7 +359,7 @@ new class extends Component {
                         <x-button wire:click='pulang' wire:confirm='Anda yakin ingin melakukan presensi pulang sekarang ?' icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white" type="submit" spinner="pulang" />
                     @else
                     <x-form wire:submit="save">
-                    <x-file wire:model="image" accept="image/png, image/jpeg" change-text="Ganti">
+                    <x-file wire:model="image" accept="image/png, image/jpeg" change-text="Ganti" capture>
                         <img src="/images/camera.png" class="w-50 h-60 rounded-box bg-contain"  />
                         {{-- <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60 rounded-box bg-contain"  /> --}}
                     </x-file>
