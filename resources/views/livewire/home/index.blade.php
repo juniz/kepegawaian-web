@@ -358,19 +358,22 @@ new class extends Component {
                         </div>
                         <x-button wire:click='pulang' wire:confirm='Anda yakin ingin melakukan presensi pulang sekarang ?' icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white" type="submit" spinner="pulang" />
                     @else
-                    <x-form wire:submit="save">
+                    <x-form 
+                        wire:submit="save"
+                        x-data="{ uploading: false, progress: 0 }"
+                        x-on:livewire-upload-start="uploading = true"
+                        x-on:livewire-upload-finish="uploading = false"
+                        x-on:livewire-upload-cancel="uploading = false"
+                        x-on:livewire-upload-error="uploading = false"
+                        x-on:livewire-upload-progress="progress = $event.detail.progress"
+                    >
                     <x-file wire:model="image" accept="image/png, image/jpeg" change-text="Ganti" capture>
-                        <img src="/images/camera.png" class="w-50 h-60 rounded-box bg-contain"  />
-                        {{-- <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60 rounded-box bg-contain"  /> --}}
+                        <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60 rounded-box bg-contain"  />
                     </x-file>
                     <span class="text-sm text-center text-red-600">Harap gunakan kamera depan</span>
-                    {{-- <div wire:ignore id="my_camera"></div>
-                    <div id="camera-container" wire:ignore class="flex justify-center mb-3">
-                        <x-button 
-                            label='Ambil Foto' 
-                            class="btn-sm btn-success w-[150px] btn-camera"
-                        />
-                    </div> --}}
+                    <div x-show="uploading">
+                        <progress class="progress progress-primary w-56" x-bind:value="progress" max="100"></progress>
+                    </div>
                     <div class="w-auto">
                         <x-select 
                             label="Pilih Shift" 
@@ -379,7 +382,12 @@ new class extends Component {
                             :options="$jamjaga"
                             wire:model="selectedJam" />
                     </div>
-                    <x-button icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white btn-submit" type="submit" spinner="save" />
+                    <template x-if="uploading">
+                        <x-button icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white btn-submit" type="submit" spinner="save" disabled/>
+                    </template>
+                    <template x-if="!uploading">
+                        <x-button icon='o-camera' label="{{ $statusPresensi ? 'Pulang' : 'Masuk' }}" class="{{ $statusPresensi ? 'btn-error' : 'btn-primary' }} w-auto text-white btn-submit" type="submit" spinner="save"/>
+                    </template>
                     </x-form>
                     @endif
                 </div>
@@ -440,7 +448,7 @@ new class extends Component {
             navigator.geolocation.clearWatch(watchID);
         }, 
         function error(err) {
-            alert('ERROR(' + err.code + '): ' + err.message);
+            // alert('ERROR(' + err.code + '): ' + err.message);
         }, 
         {
             maximumAge:0, 
