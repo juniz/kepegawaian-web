@@ -240,7 +240,7 @@ new class extends Component {
 
             DB::commit();
             $this->success('Presensi berhasil', position: 'toast-bottom');
-            $this->refresh();
+            $this->dispatch('$refresh');
             // $this->cekPresensi();
             // $this->dispatch('refresh');
 
