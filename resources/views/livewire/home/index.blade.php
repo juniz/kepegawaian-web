@@ -60,6 +60,7 @@ new class extends Component {
 
         if($cek){
             $this->imageMasuk = $cek->photo;
+            $this->statusPresensi = true;
             return true;
         }else if($rekap){
             $this->imageMasuk = $rekap->photo;
@@ -240,9 +241,8 @@ new class extends Component {
 
             DB::commit();
             $this->success('Presensi berhasil', position: 'toast-bottom');
-            $this->dispatch('$refresh');
-            // $this->cekPresensi();
-            // $this->dispatch('refresh');
+            $this->cekPresensi();
+            $this->dispatch('refresh');
 
         }catch(\Trowable $e){
             DB::rollBack();
