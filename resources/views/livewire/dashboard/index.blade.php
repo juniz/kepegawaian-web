@@ -66,7 +66,7 @@ new class extends Component {
     {
         return [
             'nik' => $this->nik,
-            'jmlIzin' => $this->getJmlIzin(),
+            // 'jmlIzin' => $this->getJmlIzin(),
             'jmlCuti' => $this->getJmlCuti(),
             'jmlAbsensi' => $this->getJmlAbsensi(),
             'jmlTelatAbsensi' => $this->getJmlTelatAbsensi(),
@@ -77,8 +77,8 @@ new class extends Component {
 
 <div>
     <x-header title="Dashboard" separator />
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
-        <x-stat title="Izin" description="Tahun ini" value="{{$jmlIzin}}" icon="o-envelope" tooltip="Jumlah Izin Tahun Ini" />
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+        {{-- <x-stat title="Izin" description="Tahun ini" value="{{$jmlIzin}}" icon="o-envelope" tooltip="Jumlah Izin Tahun Ini" /> --}}
  
         <x-stat
             title="Cuti"
