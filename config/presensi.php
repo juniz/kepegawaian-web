@@ -6,6 +6,6 @@ return [
     'jarak' => env('JARAK', '0.0'),
     'pegawai_url' => env('PEGAWAI_URL', 'http://localhost:8000/pegawai'),
     'dashboard_pegawai' => [
-        ['id' => '800'], ['id' => '345']
+        ['id' => 'P0000228']
     ]
 ];

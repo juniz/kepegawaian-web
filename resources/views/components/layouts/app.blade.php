@@ -55,7 +55,7 @@
                 
                 <x-menu-item title="Dashboard" icon="o-chart-bar-square" link="/dashboard" />
                 @foreach(config('presensi.dashboard_pegawai') as $item)
-                    @if($user->id == $item['id'])
+                    @if($user->username == $item['id'])
                         <x-menu-item title="Dashboard Pegawai" icon="o-chart-bar-square" link="/dashboard/pegawai" />
                     @endif
                 @endforeach
