@@ -61,7 +61,7 @@
                 @endforeach
                 <x-menu-item title="Presensi" icon="o-camera" link="/home" />
                 {{-- <x-menu-item title="Izin" icon="o-clipboard" link="/izin" /> --}}
-                <x-menu-item title="Cuti" icon="o-clipboard" link="/cuti" />
+                {{-- <x-menu-item title="Cuti" icon="o-clipboard" link="/cuti" /> --}}
                 <x-menu-item title="Jadwal" icon="o-calendar-days" link="/jadwal" />
                 {{-- <x-menu-item title="Rapat" icon="c-user-group" link="/rapat" /> --}}
                 {{-- <x-menu-sub title="Settings" icon="o-cog-6-tooth">
