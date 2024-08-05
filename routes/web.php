@@ -21,6 +21,7 @@ Volt::route('/cuti', 'cuti.index')->middleware('ceklogin');
 Volt::route('/jadwal', 'jadwal.index')->middleware('ceklogin');
 Volt::route('/dashboard', 'dashboard.index')->middleware('ceklogin');
 Volt::route('/dashboard/pegawai', 'dashboard.pegawai')->middleware('ceklogin');
+Volt::route('/profile', 'profile.index')->middleware('ceklogin');
 Volt::route('/rapat', 'rapat.index');
 Route::get('/rapat/print', [RapatController::class, 'index']);
 Route::get('/logout', function () {

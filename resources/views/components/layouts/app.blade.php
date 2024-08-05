@@ -63,6 +63,7 @@
                 {{-- <x-menu-item title="Izin" icon="o-clipboard" link="/izin" /> --}}
                 {{-- <x-menu-item title="Cuti" icon="o-clipboard" link="/cuti" /> --}}
                 <x-menu-item title="Jadwal" icon="o-calendar-days" link="/jadwal" />
+                <x-menu-item title="Profile" icon="o-user" link="/profile" />
                 {{-- <x-menu-item title="Rapat" icon="c-user-group" link="/rapat" /> --}}
                 {{-- <x-menu-sub title="Settings" icon="o-cog-6-tooth">
                     <x-menu-item title="Wifi" icon="o-wifi" link="####" />
