@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'ceklogin' => \App\Http\Middleware\CekLogin::class,
         'login' => \App\Http\Middleware\Login::class,
+        'presensipegawai' => \App\Http\Middleware\PresensiPegawai::class,
     ];
 }

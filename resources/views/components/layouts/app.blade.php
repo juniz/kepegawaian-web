@@ -54,15 +54,19 @@
                 <x-menu-separator />
                 
                 <x-menu-item title="Dashboard" icon="o-chart-bar-square" link="/dashboard" />
+                @php
+                    $akses = App\Models\KepegawaianAkses::where('id_pegawai', $user->id)->first();
+                @endphp
                 @foreach(config('presensi.dashboard_pegawai') as $item)
-                    @if($user->username == $item['id'])
+                    @if($akses)
                         <x-menu-item title="Dashboard Pegawai" icon="o-chart-bar-square" link="/dashboard/pegawai" />
                     @endif
                 @endforeach
                 <x-menu-item title="Presensi" icon="o-camera" link="/home" />
-                {{-- <x-menu-item title="Izin" icon="o-clipboard" link="/izin" /> --}}
-                {{-- <x-menu-item title="Cuti" icon="o-clipboard" link="/cuti" /> --}}
                 <x-menu-item title="Jadwal" icon="o-calendar-days" link="/jadwal" />
+                @if(config('presensi.super_admin') == $user->username)
+                    <x-menu-item title="Setting" icon="o-cog-6-tooth" link="/setting" />
+                @endif
                 <x-menu-item title="Profile" icon="o-user" link="/profile" />
                 {{-- <x-menu-item title="Rapat" icon="c-user-group" link="/rapat" /> --}}
                 {{-- <x-menu-sub title="Settings" icon="o-cog-6-tooth">
