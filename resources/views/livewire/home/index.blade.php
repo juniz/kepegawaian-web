@@ -326,11 +326,14 @@ new class extends Component {
                 ]);
 
                 $tmp->delete();
-                DB::commit();
-                $this->success('Presensi berhasil');
-                $this->cekPresensi();
-                $this->dispatch('refresh');
+                
             }
+
+            DB::commit();
+            $this->success('Presensi berhasil');
+            $this->cekPresensi();
+            $this->dispatch('refresh');
+
         }catch(\Throwable $e){
             DB::rollBack();
             // dd($e->getMessage());
