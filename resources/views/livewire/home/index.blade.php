@@ -195,11 +195,13 @@ new class extends Component {
                     'photo' => $url,
                 ]);
 
-                $jarak = $this->hitungJarak($this->latitude, $this->longitude, config('presensi.latitute'), config('presensi.longitude'));
+                if(config('presensi.jarak') != 0){
+                    $jarak = $this->hitungJarak($this->latitude, $this->longitude, config('presensi.latitute'), config('presensi.longitude'));
 
-                if($jarak > config('presensi.jarak')){
-                    $this->error('Anda diluar jangkauan lokasi');
-                    return;
+                    if($jarak > config('presensi.jarak')){
+                        $this->error('Anda diluar jangkauan lokasi');
+                        return;
+                    }
                 }
 
                 $this->simpanLokasi();
