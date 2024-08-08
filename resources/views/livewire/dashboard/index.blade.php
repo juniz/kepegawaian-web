@@ -2,16 +2,47 @@
 
 use Livewire\Volt\Component;
 use Illuminate\Support\Facades\DB;
+use App\Models\TemporaryPresensi;
+use App\Models\RekapPresensi;
 
 new class extends Component {
     public $nik = '';
     public $id_pegawai = '';
+    public bool $statusPresensi = false;
 
     public function mount()
     {
         $user = session('user');
         $this->id_pegawai = $user->id;
         $this->nik = $this->getNik();
+        $this->statusPresensi = $this->cekPresensi();
+    }
+
+    public function cekPresensi() : bool
+    {
+        $cek = TemporaryPresensi::query()
+                ->where('id', $this->id_pegawai)
+                ->first();
+
+        $rekap = RekapPresensi::query()
+                ->where('id', $this->id_pegawai)
+                ->where('jam_datang', 'like', '%'.date('Y-m-d').'%')
+                ->first();
+
+        if($cek){
+            $this->imageMasuk = $cek->photo;
+            return true;
+        }else if($rekap){
+            $this->imageMasuk = $rekap->photo;
+            return true;
+        }else{
+            $this->imageMasuk = '';
+            return false;
+        }
+
+        // $this->imageMasuk = $cek->photo ?? '';
+
+        // return $cek ? true : false;
     }
 
     public function getNik()
@@ -107,7 +138,23 @@ new class extends Component {
 </div>
 
 @section('floating')
-    <x-button icon='o-camera' class="btn-primary" link="/home">
-        Presensi
-    </x-button>
+    @if($statusPresensi)
+        <x-button 
+            icon='o-camera'
+            class="btn-error" 
+            tooltip="Absen Pulang"
+            link="/home"
+        >
+            Presensi
+        </x-button>
+    @else
+        <x-button 
+            icon='o-camera'
+            class="btn-primary" 
+            tooltip="Absen Masuk"
+            link="/home"
+        >
+            Presensi
+        </x-button>
+    @endif
 @endsection
