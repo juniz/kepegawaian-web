@@ -60,6 +60,7 @@ new class extends Component {
 
         if($cek){
             $this->imageMasuk = $cek->photo;
+            $this->statusPresensi = true;
             return true;
         }else if($rekap){
             $this->imageMasuk = $rekap->photo;
