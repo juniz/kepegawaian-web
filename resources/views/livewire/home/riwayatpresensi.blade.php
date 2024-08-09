@@ -39,7 +39,7 @@ new class extends Component {
             ->where('id', $id)
             ->where('tanggal', date('Y-m-d'))
             ->first();
-        return $data->latitude.', '.$data->longitude;
+        return $data->?latitude.', '.$data->?longitude;
     }
 
     #[On('refresh')]
