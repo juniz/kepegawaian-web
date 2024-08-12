@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
+use App\Http\Traits\Telegram;
 
 new class extends Component {
-    use WithFileUploads, Toast;
+    use WithFileUploads, Toast, Telegram;
     public $selectedTab = 'presensi';
     public string $id_pegawai = '';
     public string $name = '';
@@ -248,6 +249,7 @@ new class extends Component {
 
         }catch(\Trowable $e){
             DB::rollBack();
+            $this->sendMessage('Presensi masuk gagal, '.$e->getMessage());
             $this->error($e->getMessage());
         }
     }
@@ -338,6 +340,7 @@ new class extends Component {
         }catch(\Throwable $e){
             DB::rollBack();
             // dd($e->getMessage());
+            $this->sendMessage('Presensi Pulang gagal, '.$e->getMessage());
             $this->error($e->getMessage());
         }
     }
