@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
+use App\Http\Traits\Telegram;
 
 new class extends Component {
-    use WithFileUploads, Toast;
+    use WithFileUploads, Toast, Telegram;
     public $selectedTab = 'presensi';
     public string $id_pegawai = '';
     public string $name = '';
@@ -196,11 +197,13 @@ new class extends Component {
                     'photo' => $url,
                 ]);
 
-                $jarak = $this->hitungJarak($this->latitude, $this->longitude, config('presensi.latitute'), config('presensi.longitude'));
+                if(config('presensi.jarak') != 0){
+                    $jarak = $this->hitungJarak($this->latitude, $this->longitude, config('presensi.latitute'), config('presensi.longitude'));
 
-                if($jarak > config('presensi.jarak')){
-                    $this->error('Anda diluar jangkauan lokasi');
-                    return;
+                    if($jarak > config('presensi.jarak')){
+                        $this->error('Anda diluar jangkauan lokasi');
+                        return;
+                    }
                 }
 
                 $this->simpanLokasi();
@@ -246,6 +249,7 @@ new class extends Component {
 
         }catch(\Trowable $e){
             DB::rollBack();
+            $this->sendMessage('Presensi RSB Nganjuk masuk gagal, '.$e->getMessage());
             $this->error($e->getMessage());
         }
     }
@@ -286,22 +290,22 @@ new class extends Component {
                 ->where('id', $this->id_pegawai)
                 ->first();
             
-            $jam_jaga = JamJaga::query()
-                ->join('pegawai', 'pegawai.departemen', '=', 'jam_jaga.dep_id')
-                ->where('pegawai.id', $this->id_pegawai)
-                ->where('jam_jaga.shift', $tmp->shift)
-                ->first();
-
-            if(date('H:i:s') < $jam_jaga->jam_pulang){
-                $this->error('Belum waktunya pulang');
-                return;
-            }
-            
             if(!$tmp){
                 $this->error('Anda belum melakukan presensi masuk');
                 return;
             }else{
-                DB::beginTransaction();
+
+                $jam_jaga = JamJaga::query()
+                    ->join('pegawai', 'pegawai.departemen', '=', 'jam_jaga.dep_id')
+                    ->where('pegawai.id', $this->id_pegawai)
+                    ->where('jam_jaga.shift', $tmp->shift)
+                    ->first();
+
+                if(date('H:i:s') < $jam_jaga->jam_pulang){
+                    $this->error('Belum waktunya pulang');
+                    return;
+                }
+
                 $status = $tmp->status;
                 if((strtotime(date('Y-m-d H:i:s'))-strtotime(date('Y-m-d').' '.$jam_jaga->jam_pulang))<0) {
                     $status = $tmp->status.' & PSW';
@@ -312,6 +316,7 @@ new class extends Component {
                 $diff = $akhir->diff($awal,true); // to make the difference to be always positive.
                 $durasi = $diff->format('%H:%I:%S');
 
+                DB::beginTransaction();
                 RekapPresensi::create([
                     'id' => $this->id_pegawai,
                     'shift' => $tmp->shift,
@@ -325,13 +330,18 @@ new class extends Component {
                 ]);
 
                 $tmp->delete();
-                DB::commit();
-                $this->dispatch('refresh');
-                $this->success('Presensi berhasil');
+                
             }
+
+            DB::commit();
+            $this->success('Presensi berhasil');
+            $this->cekPresensi();
+            $this->dispatch('refresh');
+
         }catch(\Throwable $e){
             DB::rollBack();
             // dd($e->getMessage());
+            $this->sendMessage('Presensi RSB Nganjuk Pulang gagal, '.$e->getMessage());
             $this->error($e->getMessage());
         }
     }
@@ -401,8 +411,7 @@ new class extends Component {
 </div>
 
 @section('head')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.2.0/dist/signature_pad.umd.min.js"></script>
 @endsection
 
 {{-- @section('js')
@@ -449,7 +458,7 @@ new class extends Component {
             navigator.geolocation.clearWatch(watchID);
         }, 
         function error(err) {
-            // alert('ERROR(' + err.code + '): ' + err.message);
+            alert('ERROR(' + err.code + '): ' + err.message);
         }, 
         {
             maximumAge:0, 
