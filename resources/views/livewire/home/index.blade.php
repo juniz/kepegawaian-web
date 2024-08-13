@@ -290,22 +290,22 @@ new class extends Component {
                 ->where('id', $this->id_pegawai)
                 ->first();
             
-            $jam_jaga = JamJaga::query()
-                ->join('pegawai', 'pegawai.departemen', '=', 'jam_jaga.dep_id')
-                ->where('pegawai.id', $this->id_pegawai)
-                ->where('jam_jaga.shift', $tmp->shift)
-                ->first();
-
-            if(date('H:i:s') < $jam_jaga->jam_pulang){
-                $this->error('Belum waktunya pulang');
-                return;
-            }
-            
             if(!$tmp){
                 $this->error('Anda belum melakukan presensi masuk');
                 return;
             }else{
-                DB::beginTransaction();
+
+                $jam_jaga = JamJaga::query()
+                    ->join('pegawai', 'pegawai.departemen', '=', 'jam_jaga.dep_id')
+                    ->where('pegawai.id', $this->id_pegawai)
+                    ->where('jam_jaga.shift', $tmp->shift)
+                    ->first();
+
+                if(date('H:i:s') < $jam_jaga->jam_pulang){
+                    $this->error('Belum waktunya pulang');
+                    return;
+                }
+
                 $status = $tmp->status;
                 if((strtotime(date('Y-m-d H:i:s'))-strtotime(date('Y-m-d').' '.$jam_jaga->jam_pulang))<0) {
                     $status = $tmp->status.' & PSW';
@@ -316,6 +316,7 @@ new class extends Component {
                 $diff = $akhir->diff($awal,true); // to make the difference to be always positive.
                 $durasi = $diff->format('%H:%I:%S');
 
+                DB::beginTransaction();
                 RekapPresensi::create([
                     'id' => $this->id_pegawai,
                     'shift' => $tmp->shift,
