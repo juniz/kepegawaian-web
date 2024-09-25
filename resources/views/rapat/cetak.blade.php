@@ -88,7 +88,6 @@
                             <td> {{ $no }} </td>
                             <td> {{ $value->nama }} </td>
                             <td> {{ $value->instansi }} </td>
-                            <td> {{ $value->nama }} </td>
                             <td style="width:15%">
                                 @if($no % 2 != 0)
                                     <img src="{{ $value->tanda_tangan }}" alt="" width="80" height="50" />

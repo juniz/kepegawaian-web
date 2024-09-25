@@ -23,6 +23,7 @@ new class extends Component {
 
     public function fillChart()
     {
+        
         Arr::set($this->chart, 'data.datasets.0.data', [
             $this->getAbsensiTelat('01'),
             $this->getAbsensiTelat('02'),
