@@ -13,7 +13,7 @@ class RapatController extends Controller
         $cari = $request->cari;
         $rapat = DB::table('rapat')
             ->where('tanggal', 'like', "%$tanggal%")
-            ->where('nama', 'like', "%$cari%")
+            ->where('rapat', 'like', "%$cari%")
             ->get();
 
         return view('rapat.cetak', [
