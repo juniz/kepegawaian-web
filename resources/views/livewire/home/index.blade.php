@@ -346,11 +346,6 @@ new class extends Component {
         }
     }
 
-    // public function updatedImage()
-    // {
-    //     dd($this->image->getSize());
-    // }
-
     public function with(): array
     {
         return [
@@ -452,8 +447,8 @@ new class extends Component {
 
         // Draw to canvas
         const canvas = document.createElement('canvas');
-        canvas.width = 250;
-        canvas.height = 350;
+        canvas.width = imageBitmap.width;
+        canvas.height = imageBitmap.height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(imageBitmap, 0, 0);
 
