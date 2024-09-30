@@ -346,6 +346,11 @@ new class extends Component {
         }
     }
 
+    // public function updatedImage()
+    // {
+    //     dd($this->image->getSize());
+    // }
+
     public function with(): array
     {
         return [
@@ -361,6 +366,10 @@ new class extends Component {
         <x-tabs wire:model="selectedTab">
             <x-tab name="presensi" label="Presensi" icon="o-users" >
                 <div class="flex flex-col justify-center items-center space-y-2 ">
+                    {{-- <div id="root">
+                        <p>Upload an image and see the result</p>
+                        <input id="img-input" type="file" accept="image/*" style="display:block" />
+                    </div> --}}
                     @if($statusPresensi)
                         <img src="{{ $imageMasuk }}" alt="" class="w-40 h-48 rounded-box">
                         <div class="text-center">
@@ -378,7 +387,7 @@ new class extends Component {
                         x-on:livewire-upload-error="uploading = false"
                         x-on:livewire-upload-progress="progress = $event.detail.progress"
                     >
-                    <x-file wire:model="image" accept="image/png, image/jpeg" change-text="Ganti" capture>
+                    <x-file id="img-input" accept="image/png, image/jpeg" class="my-image-field" change-text="Ganti" capture>
                         <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60 rounded-box bg-contain"  />
                     </x-file>
                     <span class="text-sm text-center text-red-600">Harap gunakan kamera depan</span>
@@ -414,38 +423,6 @@ new class extends Component {
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.2.0/dist/signature_pad.umd.min.js"></script>
 @endsection
 
-{{-- @section('js')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.min.js"></script>
-    <script>
-        var cam = document.getElementById('my_camera');
-        if(cam){
-            Webcam.set({
-                width: 240,
-                height: 320,
-                image_format: 'jpeg',
-                jpeg_quality: 90,
-                dest_width: 240,
-                dest_height: 320,
-                constraints: {
-                    width: 240,
-                    height: 320,
-                    facingMode: 'user'
-                }
-            });
-            Webcam.attach('#my_camera');
-
-            document.querySelector('.btn-camera').addEventListener('click', function(){
-                Webcam.snap(function(data_uri){
-                    @this.set('image', data_uri);
-                    document.querySelector('#my_camera').innerHTML = '<img src="'+data_uri+'" class="w-[240px] h-[320px] rounded-box" />';
-                    $('.btn-camera').hide();
-                    $('#camera-container').append('<button id="btn-ulang" class="btn normal-case btn-sm btn-success w-[150px]" onclick="location.reload()">Batal</button>');
-                });
-            });
-        }
-    </script>
-@endsection --}}
-
 @script
 <script>
     let watchID = navigator.geolocation.getCurrentPosition(
@@ -466,6 +443,37 @@ new class extends Component {
             enableHighAccuracy:false
         }
     );
+
+    const input = document.querySelector('.my-image-field');
+
+    const compressImage = async (file, { quality = 1, type = file.type }) => {
+        // Get as image data
+        const imageBitmap = await createImageBitmap(file);
+
+        // Draw to canvas
+        const canvas = document.createElement('canvas');
+        canvas.width = 250;
+        canvas.height = 350;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(imageBitmap, 0, 0);
+
+        // Turn into Blob
+        return await new Promise((resolve) =>
+            canvas.toBlob(resolve, type, quality)
+        );
+    };
+
+    input.addEventListener('change', async (e) => {
+        
+        const compressedFile = await compressImage(e.target.files[0], {
+                quality: 0.5,
+                type: 'image/jpeg',
+            });
+        console.log(compressedFile);
+        $wire.upload('image', compressedFile, (file) => {
+            console.log(file);
+        });
+    });
 
 </script>
 @endscript
