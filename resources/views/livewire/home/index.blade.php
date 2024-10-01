@@ -441,34 +441,34 @@ new class extends Component {
 
     // const input = document.querySelector('.my-image-field');
 
-    // const compressImage = async (file, { quality = 1, type = file.type }) => {
-    //     // Get as image data
-    //     const imageBitmap = await createImageBitmap(file);
+    const compressImage = async (file, { quality = 1, type = file.type }) => {
+        // Get as image data
+        const imageBitmap = await createImageBitmap(file);
 
-    //     // Draw to canvas
-    //     const canvas = document.createElement('canvas');
-    //     canvas.width = imageBitmap.width;
-    //     canvas.height = imageBitmap.height;
-    //     const ctx = canvas.getContext('2d');
-    //     ctx.drawImage(imageBitmap, 0, 0);
+        // Draw to canvas
+        const canvas = document.createElement('canvas');
+        canvas.width = imageBitmap.width;
+        canvas.height = imageBitmap.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(imageBitmap, 0, 0);
 
-    //     // Turn into Blob
-    //     return await new Promise((resolve) =>
-    //         canvas.toBlob(resolve, type, quality)
-    //     );
-    // };
+        // Turn into Blob
+        return await new Promise((resolve) =>
+            canvas.toBlob(resolve, type, quality)
+        );
+    };
 
-    // input.addEventListener('change', async (e) => {
+    input.addEventListener('change', async (e) => {
         
-    //     const compressedFile = await compressImage(e.target.files[0], {
-    //             quality: 0.5,
-    //             type: 'image/jpeg',
-    //         });
-    //     console.log(compressedFile);
-    //     $wire.upload('image', compressedFile, (file) => {
-    //         console.log(file);
-    //     });
-    // });
+        const compressedFile = await compressImage(e.target.files[0], {
+                quality: 0.5,
+                type: 'image/jpeg',
+            });
+        console.log(compressedFile);
+        $wire.upload('image', compressedFile, (file) => {
+            console.log(file);
+        });
+    });
 
 </script>
 @endscript
