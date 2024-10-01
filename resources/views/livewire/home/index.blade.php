@@ -382,7 +382,7 @@ new class extends Component {
                         x-on:livewire-upload-error="uploading = false"
                         x-on:livewire-upload-progress="progress = $event.detail.progress"
                     >
-                    <x-file id="img-input" accept="image/png, image/jpeg" class="my-image-field" change-text="Ganti" capture>
+                    <x-file wire:model='image' id="img-input" accept="image/png, image/jpeg" class="my-image-field" change-text="Ganti" capture>
                         <img src="{{ $imageMasuk ? $imageMasuk : (isset($image) ? $image->temporaryUrl() : asset('/images/camera.png')) }}" class="w-50 h-60 rounded-box bg-contain"  />
                     </x-file>
                     <span class="text-sm text-center text-red-600">Harap gunakan kamera depan</span>
@@ -439,36 +439,36 @@ new class extends Component {
         }
     );
 
-    const input = document.querySelector('.my-image-field');
+    // const input = document.querySelector('.my-image-field');
 
-    const compressImage = async (file, { quality = 1, type = file.type }) => {
-        // Get as image data
-        const imageBitmap = await createImageBitmap(file);
+    // const compressImage = async (file, { quality = 1, type = file.type }) => {
+    //     // Get as image data
+    //     const imageBitmap = await createImageBitmap(file);
 
-        // Draw to canvas
-        const canvas = document.createElement('canvas');
-        canvas.width = imageBitmap.width;
-        canvas.height = imageBitmap.height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(imageBitmap, 0, 0);
+    //     // Draw to canvas
+    //     const canvas = document.createElement('canvas');
+    //     canvas.width = imageBitmap.width;
+    //     canvas.height = imageBitmap.height;
+    //     const ctx = canvas.getContext('2d');
+    //     ctx.drawImage(imageBitmap, 0, 0);
 
-        // Turn into Blob
-        return await new Promise((resolve) =>
-            canvas.toBlob(resolve, type, quality)
-        );
-    };
+    //     // Turn into Blob
+    //     return await new Promise((resolve) =>
+    //         canvas.toBlob(resolve, type, quality)
+    //     );
+    // };
 
-    input.addEventListener('change', async (e) => {
+    // input.addEventListener('change', async (e) => {
         
-        const compressedFile = await compressImage(e.target.files[0], {
-                quality: 0.5,
-                type: 'image/jpeg',
-            });
-        console.log(compressedFile);
-        $wire.upload('image', compressedFile, (file) => {
-            console.log(file);
-        });
-    });
+    //     const compressedFile = await compressImage(e.target.files[0], {
+    //             quality: 0.5,
+    //             type: 'image/jpeg',
+    //         });
+    //     console.log(compressedFile);
+    //     $wire.upload('image', compressedFile, (file) => {
+    //         console.log(file);
+    //     });
+    // });
 
 </script>
 @endscript
